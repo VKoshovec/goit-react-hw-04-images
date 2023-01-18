@@ -2,6 +2,7 @@ import { Component } from "react";
 import css from './phoneBook.module.css';
 import ContactList from "../ContactList/ContactList";
 import ContactAddForm from "../ContactAddForm/ContactAddForm";
+import ContactFilter from "../ContactFilter/ContactFilter";
 
 class PhoneBook extends Component {
 
@@ -29,8 +30,9 @@ class PhoneBook extends Component {
         return (
         <div className= {css.phoneBook}>
             <h1>Phonebook</h1>
-            <ContactAddForm onSubmit= { res => this.addContact(res) } />
+            <ContactAddForm onSubmit = { res => this.addContact(res) } />
             <h2>Contacts</h2>
+            <ContactFilter onChange = { fltr => console.log(fltr) } />
             <ContactList contacts={ contactList } />
         </div>
         )
