@@ -16,23 +16,38 @@ class PhoneBook extends Component {
     }
 
     addContact = (newContact) => {
-      const  newContacts  = this.state.contacts; 
-      newContacts.push(newContact);
-      this.setState(
-        {contacts: newContacts}
-      )
+        const  newContacts  = this.state.contacts; 
+        newContacts.push(newContact);
+        this.setState(
+            {contacts: newContacts}
+        )
     }
 
-    render () {
+    addFilter = (newFilter) => {
+        this.setState({
+            filter: newFilter,
+        })
+    };
 
-        const contactList = this.state.contacts;
+    fileteredContacts = (filterName) => {
+        const currentContacts = this.state.contacts;
+
+        return currentContacts.filter(contact =>      
+             contact.name.toLowerCase().includes(filterName.toLowerCase())
+        )};
+
+    render () {
+        
+        const filterStatus = this.state.filter;
+        const currentContactList = this.state.contacts;
+        const contactList = filterStatus ? this.fileteredContacts(filterStatus):currentContactList;
 
         return (
         <div className= {css.phoneBook}>
             <h1>Phonebook</h1>
             <ContactAddForm onSubmit = { res => this.addContact(res) } />
             <h2>Contacts</h2>
-            <ContactFilter onChange = { fltr => console.log(fltr) } />
+            <ContactFilter onChange = { filter => this.addFilter(filter) } />
             <ContactList contacts={ contactList } />
         </div>
         )
