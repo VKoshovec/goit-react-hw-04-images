@@ -13,7 +13,7 @@ class PhoneBook extends Component {
             {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
         ],
         filter: '' 
-    }
+    };
 
     addContact = (newContact) => {
         const newContacts  = this.state.contacts;
@@ -25,7 +25,7 @@ class PhoneBook extends Component {
             newContacts.push(newContact);
             this.setState({contacts: newContacts});
         }        
-    }
+    };
 
     addFilter = (newFilter) => {
         this.setState({
@@ -37,8 +37,8 @@ class PhoneBook extends Component {
         const currentContacts = this.state.contacts;
 
         return currentContacts.filter(contact =>      
-             contact.name.toLowerCase().includes(filterName.toLowerCase())
-    )};
+             contact.name.toLowerCase().includes(filterName.toLowerCase()))
+    };
 
     deleteContact = (e) => {
         const currentContacts = this.state.contacts;
@@ -47,13 +47,13 @@ class PhoneBook extends Component {
         this.setState(
            { contacts: newStateContacts } 
         );
-    }
+    };
 
     render () {
         
         const filterStatus = this.state.filter;
         const currentContactList = this.state.contacts;
-        const contactList = filterStatus ? this.fileteredContacts(filterStatus):currentContactList;
+        const contactList = filterStatus ? this.fileteredContacts(filterStatus) : currentContactList;
 
         return (
         <div className= {css.phoneBook}>
