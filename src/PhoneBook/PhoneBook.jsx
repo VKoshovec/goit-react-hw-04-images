@@ -16,11 +16,15 @@ class PhoneBook extends Component {
     }
 
     addContact = (newContact) => {
-        const  newContacts  = this.state.contacts; 
-        newContacts.push(newContact);
-        this.setState(
-            {contacts: newContacts}
-        )
+        const newContacts  = this.state.contacts;
+        const isPresentContact = newContacts.find(element => element.name === newContact.name) ? true: false;
+        
+        if (isPresentContact){
+            alert(`${newContact.name} is already in contacts.`)
+        } else {
+            newContacts.push(newContact);
+            this.setState({contacts: newContacts});
+        }        
     }
 
     addFilter = (newFilter) => {
@@ -34,7 +38,16 @@ class PhoneBook extends Component {
 
         return currentContacts.filter(contact =>      
              contact.name.toLowerCase().includes(filterName.toLowerCase())
-        )};
+    )};
+
+    deleteContact = (e) => {
+        const currentContacts = this.state.contacts;
+        const delContact = e.currentTarget.name;
+        const newStateContacts = currentContacts.filter(element=> element.name !== delContact);
+        this.setState(
+           { contacts: newStateContacts } 
+        );
+    }
 
     render () {
         
@@ -48,7 +61,7 @@ class PhoneBook extends Component {
             <ContactAddForm onSubmit = { res => this.addContact(res) } />
             <h2>Contacts</h2>
             <ContactFilter onChange = { filter => this.addFilter(filter) } />
-            <ContactList contacts={ contactList } />
+            <ContactList contacts={ contactList } onClick = { this.deleteContact }/>
         </div>
         )
     }
