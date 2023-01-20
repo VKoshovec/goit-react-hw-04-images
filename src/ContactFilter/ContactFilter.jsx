@@ -4,11 +4,6 @@ import PropTypes from 'prop-types';
 
 class ContactFilter extends Component {
 
-    static propTypes = {
-        onChange: PropTypes.func,
-        value: PropTypes.string
-    }
-
     hendleChange = (e) => {
        const findName = e.currentTarget.value;
        this.props.onChange (findName);
@@ -30,6 +25,11 @@ class ContactFilter extends Component {
         </div>
         )
     }
-}
+};
+
+ContactFilter.propTypes = {
+    onChange: PropTypes.func,
+    value: PropTypes.string
+};
 
 export default ContactFilter;

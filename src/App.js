@@ -20,7 +20,7 @@ class App extends Component {
     addContact = (newContact) => {
         const newContacts  = this.state.contacts;
         const isPresentContact = newContacts.find(element => 
-            element.name.toLowerCase().includes(newContact.name.toLowerCase())
+            element.name.toLowerCase() === newContact.name.toLowerCase()
         ) ? true: false;
         
         

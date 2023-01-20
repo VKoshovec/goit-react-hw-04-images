@@ -5,10 +5,6 @@ import css from './contactAddForm.module.css';
 
 class ContactAddForm extends Component {
 
-    static propTypes = {
-        onSubmit: PropTypes.func.isRequired,
-    };
-
     hendleSubmit = e => {
         e.preventDefault();
         const form = e.currentTarget;
@@ -46,6 +42,11 @@ class ContactAddForm extends Component {
             </form>
         )
     }
+};
+
+
+ContactAddForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
 };
 
 export default ContactAddForm;
