@@ -28,8 +28,8 @@ class ContactFilter extends Component {
 };
 
 ContactFilter.propTypes = {
-    onChange: PropTypes.func,
-    value: PropTypes.string
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired
 };
 
 export default ContactFilter;
