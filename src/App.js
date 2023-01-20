@@ -19,7 +19,10 @@ class App extends Component {
 
     addContact = (newContact) => {
         const newContacts  = this.state.contacts;
-        const isPresentContact = newContacts.find(element => element.name === newContact.name) ? true: false;
+        const isPresentContact = newContacts.find(element => 
+            element.name.toLowerCase().includes(newContact.name.toLowerCase())
+        ) ? true: false;
+        
         
         if (isPresentContact){
             alert(`${newContact.name} is already in contacts.`)
@@ -62,7 +65,7 @@ class App extends Component {
             <h1>Phonebook</h1>
             <ContactAddForm onSubmit = { res => this.addContact(res) } />
             <h2>Contacts</h2>
-            <ContactFilter onChange = { filter => this.addFilter(filter) } />
+            <ContactFilter onChange = { filter => this.addFilter(filter) } value={ filterStatus }/>
             <ContactList contacts={ contactList } onClick = { this.deleteContact }/>
         </div>
         )

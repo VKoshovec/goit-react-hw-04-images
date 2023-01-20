@@ -19,7 +19,7 @@ const ContactItem = ({
 ContactItem.propTypes = {
     name: PropTypes.string.isRequired,
     number: PropTypes.string.isRequired,
-    onClick: PropTypes.func,
+    onClick: PropTypes.func.isRequired,
 }
 
 export default ContactItem;

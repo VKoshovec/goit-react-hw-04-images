@@ -1,8 +1,13 @@
 import { Component } from "react";
 import { nanoid } from 'nanoid';
+import PropTypes from 'prop-types';
 import css from './contactAddForm.module.css';
 
 class ContactAddForm extends Component {
+
+    static propTypes = {
+        onSubmit: PropTypes.func.isRequired,
+    };
 
     hendleSubmit = e => {
         e.preventDefault();
@@ -41,6 +46,6 @@ class ContactAddForm extends Component {
             </form>
         )
     }
-}
+};
 
 export default ContactAddForm;

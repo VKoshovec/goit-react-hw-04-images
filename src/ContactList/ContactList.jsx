@@ -23,7 +23,7 @@ ContactList.propTypes = {
       number: PropTypes.string.isRequired,
     })
   ),
-  onClick: PropTypes.func,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default ContactList;
