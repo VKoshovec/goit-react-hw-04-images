@@ -17,6 +17,18 @@ class App extends Component {
         filter: '' 
     };
 
+    componentDidMount(){
+        
+        const LocalStoragePhonebook = localStorage.getItem('LocalPhonebook');
+        const LocalPhonebook = JSON.parse(LocalStoragePhonebook);
+        if (LocalPhonebook) {
+            this.setState({contacts: LocalPhonebook});
+        }
+        // console.log(LocalPhonebook);
+        // console.log(this.state.contacts);
+        // localStorage.setItem("LocalPhonebook", JSON.stringify(this.state.contacts));
+    }
+
     addContact = (newContact) => {
         const newContacts  = this.state.contacts;
         const isPresentContact = newContacts.find(element => 
