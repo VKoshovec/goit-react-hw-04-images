@@ -9,29 +9,16 @@ import ContactFilter from "./ContactFilter/ContactFilter";
 class App extends Component {
 
     state = {
-        contacts: [
-            {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-            {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-            {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-        ],
+        contacts: [],
         filter: '' 
     };
 
-    componentDidMount(){
-        
-        const LocalStoragePhonebook = localStorage.getItem('LocalPhonebook');
-        const LocalPhonebook = JSON.parse(LocalStoragePhonebook);
-        if (LocalPhonebook) {
-            this.setState({contacts: LocalPhonebook});
-        }
-        // console.log(LocalPhonebook);
-        // console.log(this.state.contacts);
-        // localStorage.setItem("LocalPhonebook", JSON.stringify(this.state.contacts));
-    }
-
     addContact = (newContact) => {
-        const newContacts  = this.state.contacts;
-        const isPresentContact = newContacts.find(element => 
+
+        const newContacts  = [];
+        const currentContacts = this.state.contacts;
+
+        const isPresentContact = currentContacts.find(element => 
             element.name.toLowerCase() === newContact.name.toLowerCase()
         ) ? true: false;
         
@@ -39,6 +26,7 @@ class App extends Component {
         if (isPresentContact){
             alert(`${newContact.name} is already in contacts.`)
         } else {
+            newContacts.push(...currentContacts);
             newContacts.push(newContact);
             this.setState({contacts: newContacts});
         }        
@@ -65,6 +53,24 @@ class App extends Component {
            { contacts: newStateContacts } 
         );
     };
+
+    componentDidMount(){       
+        const LocalStoragePhonebook = localStorage.getItem('LocalPhonebook');
+        const LocalPhonebook = JSON.parse(LocalStoragePhonebook);
+        if (LocalPhonebook) {
+            this.setState({contacts: LocalPhonebook});
+        }; 
+    }
+
+    componentDidUpdate (prevProps, prevState) {
+
+        const prevConatcts = prevState.contacts;
+        const currentContacts = this.state.contacts;
+
+        if (currentContacts !== prevConatcts) {
+            localStorage.setItem ('LocalPhonebook', JSON.stringify(currentContacts));
+        }
+    }
 
     render () {
         
