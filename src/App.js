@@ -57,13 +57,13 @@ class App extends Component {
     componentDidMount(){       
         const LocalStoragePhonebook = localStorage.getItem('LocalPhonebook');
         const LocalPhonebook = JSON.parse(LocalStoragePhonebook);
-        if (LocalPhonebook) {
+
+        if (LocalPhonebook?.length) {
             this.setState({contacts: LocalPhonebook});
         }; 
     }
 
     componentDidUpdate (prevProps, prevState) {
-
         const prevConatcts = prevState.contacts;
         const currentContacts = this.state.contacts;
 
