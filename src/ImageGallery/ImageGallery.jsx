@@ -11,7 +11,7 @@ const ImageGallery = ({ children }) => {
 };
 
 ImageGallery.propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.any.isRequired,
 }
 
 export default ImageGallery;
