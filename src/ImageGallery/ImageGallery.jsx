@@ -13,22 +13,34 @@ class ImageGallery extends  Component {
     state = {
        images: [], 
        page: 1,
-       status: 'clear'
+       status: 'clear',
+       errMessage: ''
     };
 
-    async getImages ( searchWord,page ) {
+    async getImages ( searchWord, page ) {
 
        await axios.get(`https://pixabay.com/api/?q=${ searchWord }&page=${ page }&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=12`)
-        .then(response => this.setState({ images: response.data.hits, status: 'loaded' }));
+        .then(response => this.setState({ images: response.data.hits, status: 'loaded' })).catch ( err => this.setState({status: 'err'}));
 
     };
 
     componentDidMount () {
-
         const searchWord = this.props.searchWord;
 
         this.setState({ status: 'loading' });
         this.getImages ( searchWord, 1 );
+    }
+
+    componentDidUpdate () {
+        const { page }= this.state;
+        const { searchWord } = this.props;
+
+        this.getImages ( searchWord, page );
+    }
+
+    loadMoreClick = () => {
+        this.setState((prevState) => { return { page: prevState.page + 1 } })
+        console.log(this.state);
     }
 
     render () {
@@ -43,13 +55,17 @@ class ImageGallery extends  Component {
             return ( <Loader/> )
         };
 
+        if (status === 'err') {
+            return ( <div>Some problems with Api!</div> )
+        };
+
        
         if (status === 'loaded') {
         return ( 
             <ul className={ css.imageGallery }>
                { images.map((element)=> 
                <ImageGalleryItem key = { element.id } url= { element.webformatURL } alt = { 'photo' }/>) }
-               <Button />
+               <Button onClick={ this.loadMoreClick }/>
             </ul>
         )};
     }
