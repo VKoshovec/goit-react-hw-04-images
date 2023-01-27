@@ -7,9 +7,11 @@ class Searchbar extends Component {
 
    hendleSubmit = (e) => {
     e.preventDefault();
+    const form = e.currentTarget;
     const formValue = e.currentTarget.elements.input.value;
     this.props.onSubmit ({ formValue });  
-   }
+    form.reset();
+   };
 
    render () {
        return (

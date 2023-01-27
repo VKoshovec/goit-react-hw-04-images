@@ -10,17 +10,14 @@ class App extends Component {
     };
    
     hendleSearch = (res) => {
-        this.setState ({searchWord: res.formValue });
+        this.setState ({ searchWord: res.formValue });
     };
 
     render () {
        return (
         <>  
          <Searchbar onSubmit = {(res) => this.hendleSearch(res)}/> 
-         { this.state.searchWord? <ImageGallery searchWord = { this.state.searchWord } />:"" }
-         {/* {<Button/>} */}
-         {/* <Loader/> */}
-         {/* <Modal/> */}
+         <ImageGallery searchWord = { this.state.searchWord } />
         </>
     )};
 };

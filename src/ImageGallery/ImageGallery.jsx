@@ -13,35 +13,54 @@ class ImageGallery extends  Component {
     state = {
        images: [], 
        page: 1,
+       searchWord: '',
        status: 'clear',
        errMessage: ''
     };
 
-    async getImages ( searchWord, page ) {
+    // getImages ( searchWord, page ) {
 
-       await axios.get(`https://pixabay.com/api/?q=${ searchWord }&page=${ page }&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=12`)
-        .then(response => this.setState({ images: response.data.hits, status: 'loaded' })).catch ( err => this.setState({status: 'err'}));
+    //     this.setState ({ status: 'loading'});
 
-    };
+    //     axios.get(`https://pixabay.com/api/?q=${ searchWord }&page=1&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=${ 12 * page }`)
+    //     .then(response => this.setState({ images: response.data.hits, status: 'loaded' }))
+    //     .catch ( err => this.setState({status: 'err'}));
+           
+    // };
 
-    componentDidMount () {
-        const searchWord = this.props.searchWord;
+    componentDidUpdate (prevProps, prevState) {
 
-        this.setState({ status: 'loading' });
-        this.getImages ( searchWord, 1 );
+        console.log(prevProps.searchWord);
+        console.log(this.props.searchWord);
+    
+         if (this.props.searchWord !== prevProps.searchWord) {
+            console.log('ok')
+            this.setState ({ status: 'loading'});
+            axios.get(`https://pixabay.com/api/?q=${this.props.searchWord}&page=1&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=${ 12 }`)
+           .then( response => this.setState({ images: response.data.hits, status: 'loaded' }));
+         }
+
+        // console.log (this.state.images.length +''+ prevState.images.length)
+        //  axios.get(`https://pixabay.com/api/?q=${''}&page=1&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=${ 12 }`)
+        // .then( response => this.setState({ images: response.data.hits, status: 'loaded' }));
+        // };
+
+        // this.setState ({ searchWord: this.props.searchWord });
+        // const oldSearch = prevProps.searchWord;
+        // const newSearch = this.props.searchWord;
+
+        // if ( oldSearch !== newSearch ) {
+        //     console.log ('NewSearch');
+        //     axios.get(`https://pixabay.com/api/?q=${ newSearch }&page=1&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=${ 12  }`)
+        //     .then(response => this.setState({ images: response.data.hits, status: 'loaded' }))
+        // }
     }
 
-    componentDidUpdate () {
-        const { page }= this.state;
-        const { searchWord } = this.props;
 
-        this.getImages ( searchWord, page );
-    }
-
-    loadMoreClick = () => {
-        this.setState((prevState) => { return { page: prevState.page + 1 } })
-        console.log(this.state);
-    }
+    // loadMoreClick = () => {
+    //     this.setState((prevState) => { return { page: prevState.page + 1 } })
+    //     console.log(this.state);
+    // }
 
     render () {
 
@@ -68,6 +87,17 @@ class ImageGallery extends  Component {
                <Button onClick={ this.loadMoreClick }/>
             </ul>
         )};
+
+        // return ( 
+        //     <ul className={ css.imageGallery }>
+
+        //        { images.map((element)=> 
+        //        <ImageGalleryItem key = { element.id } url= { element.webformatURL } alt = { 'photo' }/>
+        //        )}
+
+        //        {/* <Button onClick={ this.loadMoreClick }/> */}
+        //     </ul>
+        // )
     }
 };
 
