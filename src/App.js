@@ -1,18 +1,24 @@
 import { Component } from "react";
 import Searchbar from "./Searchbar/Searchbar";
 import ImageGallery from "./ImageGallery/ImageGallery";
-import ImageGalleryItem from "./ImageGalleryItem/ImageGalleryItem";
-import Button from "./Button/Button";
 
-import Modal from "./Modal/Modal";
 
 class App extends Component {
+
+    state = {
+      searchWord: '',
+    };
+   
+    hendleSearch = (res) => {
+        this.setState ({searchWord: res.formValue });
+    };
+
     render () {
        return (
         <>  
-         <Searchbar/> 
-         <ImageGallery/>
-         <Button/>
+         <Searchbar onSubmit = {(res) => this.hendleSearch(res)}/> 
+         <ImageGallery searchWord = { this.state.searchWord } />
+         {/* {<Button/>} */}
          {/* <Loader/> */}
          {/* <Modal/> */}
         </>
