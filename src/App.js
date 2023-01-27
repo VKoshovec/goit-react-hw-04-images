@@ -17,7 +17,7 @@ class App extends Component {
        return (
         <>  
          <Searchbar onSubmit = {(res) => this.hendleSearch(res)}/> 
-         <ImageGallery searchWord = { this.state.searchWord } />
+         { this.state.searchWord? <ImageGallery searchWord = { this.state.searchWord } />:"" }
          {/* {<Button/>} */}
          {/* <Loader/> */}
          {/* <Modal/> */}

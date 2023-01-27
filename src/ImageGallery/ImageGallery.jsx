@@ -6,35 +6,29 @@ import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
 
-
-
 const ApiKey = '33150566-101cf4f5e6186ec2442960e9b';
 
 class ImageGallery extends  Component {
 
     state = {
        images: [], 
-       searchWord: '',
        page: 1,
        status: 'clear'
     };
 
-    componentDidUpdate () {
+    async getImages ( searchWord,page ) {
 
-        const { page, searchWord } = this.state;
+       await axios.get(`https://pixabay.com/api/?q=${ searchWord }&page=${ page }&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=12`)
+        .then(response => this.setState({ images: response.data.hits, status: 'loaded' }));
 
-        // this.setState(prevState{ status: 'loading' });
+    };
 
-        setTimeout(this.setState((prevState, prevProps) => {
-            if (this.props.searchWord !== prevState.searchWord) {
+    componentDidMount () {
 
-                axios.get(`https://pixabay.com/api/?q=${ searchWord }&page=${ page }&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=12`)
-                .then(response => this.setState({ images: response.data.hits, status: 'loaded' }));
-                return { searchWord , status: 'loading' }
-            }
-        }), 1000);
+        const searchWord = this.props.searchWord;
 
-     
+        this.setState({ status: 'loading' });
+        this.getImages ( searchWord, 1 );
     }
 
     render () {
