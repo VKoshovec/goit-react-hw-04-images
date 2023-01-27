@@ -14,19 +14,27 @@ class ImageGallery extends  Component {
 
     state = {
        images: [], 
-       searchName: '',
+       searchWord: '',
        page: 1,
        status: 'clear'
     };
 
     componentDidUpdate () {
 
-        const { page, searchName } = this.state;
+        const { page, searchWord } = this.state;
 
-        this.setState({ status: 'loading' });
+        // this.setState(prevState{ status: 'loading' });
 
-        axios.get(`https://pixabay.com/api/?q=${ searchName }&page=${ page }&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=12`)
-        .then(response => this.setState({ images: response.data.hits, status: 'loaded' }));     
+        setTimeout(this.setState((prevState, prevProps) => {
+            if (this.props.searchWord !== prevState.searchWord) {
+
+                axios.get(`https://pixabay.com/api/?q=${ searchWord }&page=${ page }&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=12`)
+                .then(response => this.setState({ images: response.data.hits, status: 'loaded' }));
+                return { searchWord , status: 'loading' }
+            }
+        }), 1000);
+
+     
     }
 
     render () {

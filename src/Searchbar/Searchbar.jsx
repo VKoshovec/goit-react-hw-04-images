@@ -27,7 +27,6 @@ class Searchbar extends Component {
                   placeholder="Search images and photos"
                   name='input'
                   value={ this.props.searchResult }
-                  // value= { this.state.searchWord }
                 />
               </form>
           </header>
