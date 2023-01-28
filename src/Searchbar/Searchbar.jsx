@@ -1,9 +1,9 @@
 import css from './searchbar.module.scss';
 import { FaSearch } from 'react-icons/fa';
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Searchbar extends Component {
-
 
    hendleSubmit = (e) => {
     e.preventDefault();
@@ -34,5 +34,10 @@ class Searchbar extends Component {
           </header>
 )} 
 };
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  searchResult: PropTypes.string,
+}
 
 export default Searchbar

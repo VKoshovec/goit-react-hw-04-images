@@ -6,6 +6,7 @@ import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
+import ModalDetails from '../Modal/ModalDetails';
 
 const ApiKey = '33150566-101cf4f5e6186ec2442960e9b';
 
@@ -16,6 +17,7 @@ class ImageGallery extends  Component {
        page: 1,
        searchWord: '',
        status: 'clear',
+       loading: false,
        results: 0,
        showModal: false,
        largeImage: ''
@@ -36,7 +38,7 @@ class ImageGallery extends  Component {
     
          if (currentSearchWord !== prevSearchWord) {
 
-            this.setState ({ status: 'loading', page: 1});
+            this.setState ({ loading: true, page: 1});
             
             this.getImages ( currentSearchWord, 1)
             .then( response => { 
@@ -44,44 +46,41 @@ class ImageGallery extends  Component {
                 this.setState({ images: hits, results: total }) 
             } )
             .catch(() => { this.setState({ status: 'err' }) })
-            .finally(() => this.setState({ status: 'loaded' }));
+            .finally(() => this.setState({ status: 'loaded', loading: false }));
          }
 
          if (curPage !== prevPage ) {
    
+            this.setState ({ loading: true });
+
             this.getImages ( currentSearchWord, curPage)
             .then( response => { 
                 this.setState({ images: response.data.hits }) 
             })
             .catch(() => { this.setState({ status: 'err' }) })
-            .finally(() => this.setState({ status: 'loaded' }))
+            .finally(() => this.setState({ status: 'loaded' , loading: false}))
          }
 
     }
-
 
     loadMoreClick = () => {
         this.setState((prevState) => { return { page: prevState.page + 1 } })
     }
 
-    showModal = (e) => {
-        this.setState({ showModal: true, largeImage: e.target.srcset })
+    showModal = (largeImg) => {
+        this.setState({ showModal: true, largeImage: largeImg.bigImg });
     }
 
-    closeModal = (e) => {
+    closeModal = () => {
         this.setState ({ showModal: false, largeImage: '' })
     }
  
     render () {
 
-        const { images , status,  results, showModal, largeImage } = this.state;
+        const { images , status,  results, showModal, largeImage, loading } = this.state;
 
         if (status === 'clear') {
             return ( <div>Input some search word...</div> )
-        };
-
-        if (status === 'loading') {
-            return ( <Loader/> )
         };
 
         if (status === 'err') {
@@ -91,15 +90,24 @@ class ImageGallery extends  Component {
         if (status === 'loaded') {
         return ( 
             <>
-                {showModal && <Modal url={ largeImage } onClick ={ this.closeModal }/> }
+                {showModal && 
+                <Modal onClick ={ this.closeModal }>
+                    <ModalDetails url={ largeImage } />
+                </Modal> 
+                }
                 <ul className={ css.imageGallery }>
                    { images.map((element)=> 
-                   <ImageGalleryItem key = { element.id } url= { element.webformatURL } srcSet = { element.largeImageURL } onClick={ this.showModal }/>) }            
+                   <ImageGalleryItem key = { element.id } url= { element.webformatURL } largeImage = { element.largeImageURL } onClick={ largeimg => this.showModal(largeimg) }/>) }            
                 </ul>
+                {loading &&  <Loader/>}
                 {results > images.length && <Button onClick={ this.loadMoreClick }/>}
             </>
         )};
     }
 };
+
+ImageGallery.propTypes = {
+    searchWord: PropTypes.string.isRequired
+}
 
 export default ImageGallery;
