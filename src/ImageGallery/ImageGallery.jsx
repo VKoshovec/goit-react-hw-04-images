@@ -5,6 +5,7 @@ import axios from 'axios';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
+import Modal from '../Modal/Modal';
 
 const ApiKey = '33150566-101cf4f5e6186ec2442960e9b';
 
@@ -15,56 +16,65 @@ class ImageGallery extends  Component {
        page: 1,
        searchWord: '',
        status: 'clear',
-       errMessage: ''
+       results: 0,
+       showModal: false,
+       largeImage: ''
     };
 
-    // getImages ( searchWord, page ) {
 
-    //     this.setState ({ status: 'loading'});
-
-    //     axios.get(`https://pixabay.com/api/?q=${ searchWord }&page=1&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=${ 12 * page }`)
-    //     .then(response => this.setState({ images: response.data.hits, status: 'loaded' }))
-    //     .catch ( err => this.setState({status: 'err'}));
-           
-    // };
+    async getImages ( serarchWord, searchPage) {
+       const result = await axios.get(`https://pixabay.com/api/?q=${ serarchWord }&page=1&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=${ 12 * searchPage }`);
+       return result;
+    }
 
     componentDidUpdate (prevProps, prevState) {
 
-        console.log(prevProps.searchWord);
-        console.log(this.props.searchWord);
+        const prevSearchWord =  prevProps.searchWord;
+        const currentSearchWord = this.props.searchWord;
+        const prevPage = prevState.page;
+        const curPage = this.state.page;
     
-         if (this.props.searchWord !== prevProps.searchWord) {
-            console.log('ok')
-            this.setState ({ status: 'loading'});
-            axios.get(`https://pixabay.com/api/?q=${this.props.searchWord}&page=1&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=${ 12 }`)
-           .then( response => this.setState({ images: response.data.hits, status: 'loaded' }));
+         if (currentSearchWord !== prevSearchWord) {
+
+            this.setState ({ status: 'loading', page: 1});
+            
+            this.getImages ( currentSearchWord, 1)
+            .then( response => { 
+                const { hits, total } = response.data;
+                this.setState({ images: hits, results: total }) 
+            } )
+            .catch(() => { this.setState({ status: 'err' }) })
+            .finally(() => this.setState({ status: 'loaded' }));
          }
 
-        // console.log (this.state.images.length +''+ prevState.images.length)
-        //  axios.get(`https://pixabay.com/api/?q=${''}&page=1&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=${ 12 }`)
-        // .then( response => this.setState({ images: response.data.hits, status: 'loaded' }));
-        // };
+         if (curPage !== prevPage ) {
+   
+            this.getImages ( currentSearchWord, curPage)
+            .then( response => { 
+                this.setState({ images: response.data.hits }) 
+            })
+            .catch(() => { this.setState({ status: 'err' }) })
+            .finally(() => this.setState({ status: 'loaded' }))
+         }
 
-        // this.setState ({ searchWord: this.props.searchWord });
-        // const oldSearch = prevProps.searchWord;
-        // const newSearch = this.props.searchWord;
-
-        // if ( oldSearch !== newSearch ) {
-        //     console.log ('NewSearch');
-        //     axios.get(`https://pixabay.com/api/?q=${ newSearch }&page=1&key=${ ApiKey }&image_type=photo&orientation=horizontal&per_page=${ 12  }`)
-        //     .then(response => this.setState({ images: response.data.hits, status: 'loaded' }))
-        // }
     }
 
 
-    // loadMoreClick = () => {
-    //     this.setState((prevState) => { return { page: prevState.page + 1 } })
-    //     console.log(this.state);
-    // }
+    loadMoreClick = () => {
+        this.setState((prevState) => { return { page: prevState.page + 1 } })
+    }
 
+    showModal = (e) => {
+        this.setState({ showModal: true, largeImage: e.target.srcset })
+    }
+
+    closeModal = (e) => {
+        this.setState ({ showModal: false, largeImage: '' })
+    }
+ 
     render () {
 
-        const { images , status } = this.state;
+        const { images , status,  results, showModal, largeImage } = this.state;
 
         if (status === 'clear') {
             return ( <div>Input some search word...</div> )
@@ -78,26 +88,17 @@ class ImageGallery extends  Component {
             return ( <div>Some problems with Api!</div> )
         };
 
-       
         if (status === 'loaded') {
         return ( 
-            <ul className={ css.imageGallery }>
-               { images.map((element)=> 
-               <ImageGalleryItem key = { element.id } url= { element.webformatURL } alt = { 'photo' }/>) }
-               <Button onClick={ this.loadMoreClick }/>
-            </ul>
+            <>
+                {showModal && <Modal url={ largeImage } onClick ={ this.closeModal }/> }
+                <ul className={ css.imageGallery }>
+                   { images.map((element)=> 
+                   <ImageGalleryItem key = { element.id } url= { element.webformatURL } srcSet = { element.largeImageURL } onClick={ this.showModal }/>) }            
+                </ul>
+                {results > images.length && <Button onClick={ this.loadMoreClick }/>}
+            </>
         )};
-
-        // return ( 
-        //     <ul className={ css.imageGallery }>
-
-        //        { images.map((element)=> 
-        //        <ImageGalleryItem key = { element.id } url= { element.webformatURL } alt = { 'photo' }/>
-        //        )}
-
-        //        {/* <Button onClick={ this.loadMoreClick }/> */}
-        //     </ul>
-        // )
     }
 };
 
