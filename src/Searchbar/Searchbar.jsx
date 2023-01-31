@@ -10,7 +10,7 @@ class Searchbar extends Component {
     const form = e.currentTarget;
     const formValue = e.currentTarget.elements.input.value;
     this.props.onSubmit ({ formValue });  
-    form.reset();
+    // form.reset();
    };
 
    render () {
@@ -36,8 +36,7 @@ class Searchbar extends Component {
 };
 
 Searchbar.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  searchResult: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired
 }
 
 export default Searchbar
