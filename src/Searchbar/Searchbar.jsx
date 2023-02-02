@@ -1,22 +1,18 @@
 import css from './searchbar.module.scss';
 import { FaSearch } from 'react-icons/fa';
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class Searchbar extends Component {
+const Searchbar = ({ onSubmit }) => {
 
-   hendleSubmit = (e) => {
+  const hendleSubmit = (e) => {
     e.preventDefault();
-    const form = e.currentTarget;
     const formValue = e.currentTarget.elements.input.value;
-    this.props.onSubmit ({ formValue });  
-    // form.reset();
+    onSubmit ({ formValue });  
    };
 
-   render () {
-       return (
+  return (
           <header className = {css.searchbar}>
-              <form className = {css.searchForm} onSubmit={ this.hendleSubmit }>
+              <form className = {css.searchForm} onSubmit={ hendleSubmit }>
                 <button type="submit" className={css.searchFormButton}>
                   <FaSearch size={ 20 } fillOpacity = { 0.8 }/> 
                 </button>
@@ -28,11 +24,10 @@ class Searchbar extends Component {
                   autoFocus
                   placeholder="Search images and photos"
                   name='input'
-                  value={ this.props.searchResult }
                 />
               </form>
           </header>
-)} 
+ )
 };
 
 Searchbar.propTypes = {

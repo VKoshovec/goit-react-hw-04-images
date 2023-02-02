@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const ModalDetails = ({ url }) => {
     return(
         <div className= { css.modal }>
-            <img src = { url } alt = 'detail-photo'/>
+            <img src = { url } alt = { url }/>
         </div>
     )
 }

@@ -1,25 +1,17 @@
-import { Component } from "react";
+import { useState } from "react";
 import Searchbar from "./Searchbar/Searchbar";
 import ImageGallery from "./ImageGallery/ImageGallery";
 
+const App = () => {
 
-class App extends Component {
+    const [searchWord, setSearchWord] = useState('');
 
-    state = {
-      searchWord: '',
-    };
-   
-    hendleSearch = (res) => {
-        this.setState ({ searchWord: res.formValue });
-    };
-
-    render () {
        return (
         <>  
-         <Searchbar onSubmit = {(res) => this.hendleSearch(res)}/> 
-         <ImageGallery searchWord = { this.state.searchWord } />
+         <Searchbar onSubmit = {(res) => setSearchWord(res.formValue)}/> 
+         <ImageGallery queryhWord = { searchWord } />
         </>
-    )};
+    )
 };
 
 export default App;

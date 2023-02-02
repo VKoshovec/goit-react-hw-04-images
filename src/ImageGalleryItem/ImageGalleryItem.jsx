@@ -1,30 +1,23 @@
 import css from './imageGalleryItem.module.scss';
 import PropTypes from 'prop-types';
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 
-class ImageGalleryItem extends Component {
+const ImageGalleryItem = ({ url, largeImage, onClick }) => {
+    
+    const [largeImageState, setLargeImageState] = useState ('');
 
-    state = {
-        largeImage: '',
+    const clickItem = () => {
+        onClick({largeImageState});
     }
 
-    clickItem = () => {
-        const bigImg = this.state.largeImage;
-        this.props.onClick({bigImg});
-    }
-
-    componentDidMount () {
-        this.setState({ largeImage: this.props.largeImage });
-    }
-
-    render() {
+    useEffect (() => {setLargeImageState (largeImage)} , [largeImage]);
 
     return (
-        <li onClick={ this.clickItem } className={ css.imageGalleryItem }>
-            <img src= { this.props.url } alt='image' className={ css.imageGalleryItemImage }/>
+        <li onClick={ clickItem } className={ css.imageGalleryItem }>
+            <img src= { url } alt={ url }className={ css.imageGalleryItemImage }/>
         </li>
-    )};
-};
+    )
+}
 
 ImageGalleryItem.propTypes = {
     url: PropTypes.string.isRequired,
