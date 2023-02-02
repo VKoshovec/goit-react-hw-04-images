@@ -18,7 +18,7 @@ const Modal = ({ onClick, children }) => {
          return ()=> { 
             document.removeEventListener("keydown", closeModal);
          };
-    },[]);
+    }, []);
 
      return ReactDOM.createPortal (
         <div className= { css.overlay } onClick={ closeModal }>  
