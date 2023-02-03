@@ -1,13 +1,16 @@
 import css from './searchbar.module.scss';
 import { FaSearch } from 'react-icons/fa';
-import PropTypes from 'prop-types';
+import { useSearchWord } from '../SearchWordContext';
 
-const Searchbar = ({ onSubmit }) => {
+
+const Searchbar = () => {
+
+  const { sethWord } = useSearchWord()
 
   const hendleSubmit = (e) => {
     e.preventDefault();
     const formValue = e.currentTarget.elements.input.value;
-    onSubmit ({ formValue });  
+    sethWord(formValue);
    };
 
   return (
@@ -29,9 +32,5 @@ const Searchbar = ({ onSubmit }) => {
           </header>
  )
 };
-
-Searchbar.propTypes = {
-  onSubmit: PropTypes.func.isRequired
-}
 
 export default Searchbar

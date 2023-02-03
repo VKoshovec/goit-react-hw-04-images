@@ -1,16 +1,14 @@
-import { useState } from "react";
 import Searchbar from "./Searchbar/Searchbar";
 import ImageGallery from "./ImageGallery/ImageGallery";
+import { SearchWordProvider } from '../src/SearchWordContext';
 
 const App = () => {
 
-    const [searchWord, setSearchWord] = useState('');
-
-       return (
-        <>  
-         <Searchbar onSubmit = {(res) => setSearchWord(res.formValue)}/> 
-         <ImageGallery queryhWord = { searchWord } />
-        </>
+    return (
+        <SearchWordProvider>
+            <Searchbar/> 
+            <ImageGallery/>
+        </SearchWordProvider>
     )
 };
 
