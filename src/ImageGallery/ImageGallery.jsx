@@ -1,5 +1,4 @@
 import css from './imageGallery.module.scss';
-import  PropTypes from 'prop-types';  
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
@@ -7,10 +6,14 @@ import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
 import ModalDetails from '../Modal/ModalDetails';
+import { useSearchWord } from '../SearchWordContext';
 
 const ApiKey = '33150566-101cf4f5e6186ec2442960e9b';
 
-const ImageGallery = ({ queryhWord }) => {
+const ImageGallery = () => {
+
+    const { searchWord } = useSearchWord();
+    const queryhWord = searchWord;
 
     const [images, setImages] = useState([]);
     const [page, setPage] = useState(1);
@@ -81,10 +84,6 @@ const ImageGallery = ({ queryhWord }) => {
         </>
     )
     };
-}
-
-ImageGallery.propTypes = {
-    queryhWord: PropTypes.string.isRequired
 }
 
 export default ImageGallery;
